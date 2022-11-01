@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\campSpring\programmingLanguages"/>
 			<item value="C:\campSpring\rentACar"/>
 			<item value="C:\campSpring"/>
 		</list>
