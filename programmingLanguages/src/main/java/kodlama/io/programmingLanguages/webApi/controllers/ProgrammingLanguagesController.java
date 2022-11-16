@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kodlama.io.programmingLanguages.business.abstracts.ProgrammingLanguageService;
-import kodlama.io.programmingLanguages.entities.concretes.ProgrammingLanguage;
+import kodlama.io.programmingLanguages.business.requests.CreateProgrammingLanguageRequest;
+import kodlama.io.programmingLanguages.business.requests.DeleteProgrammingLanguageRequest;
+import kodlama.io.programmingLanguages.business.requests.UpdateProgrammingLanguageRequest;
+import kodlama.io.programmingLanguages.business.responses.GetAllProgrammingLanguagesResponse;
 
 @RestController
 @RequestMapping("/api/programminglanguages")
@@ -26,30 +29,30 @@ public class ProgrammingLanguagesController {
 	
 
 	@GetMapping("/getall")
-	public List<ProgrammingLanguage> getAll(){
+	public List<GetAllProgrammingLanguagesResponse> getAll(){
 		return programmingLanguageService.getAll();
 	}
 	
 	@DeleteMapping("/delete")
-	public void delete(int id) {
+	public void delete(DeleteProgrammingLanguageRequest deleteProgrammingLanguageRequest) {
 		
-		programmingLanguageService.delete(id);
+		programmingLanguageService.delete(deleteProgrammingLanguageRequest);
 	}
 	
 	@PostMapping("/add")
-	public void add(ProgrammingLanguage programmingLanguage) throws Exception {
-		programmingLanguageService.add(programmingLanguage);
+	public void add(CreateProgrammingLanguageRequest createProgrammingLanguageRequest) throws Exception {
+		programmingLanguageService.add(createProgrammingLanguageRequest);
 		
 	}
 	
-	@GetMapping("/getById")
-	public ProgrammingLanguage getById(int id) {
-		return programmingLanguageService.getById(id);
-	}
+//	@GetMapping("/getById")
+//	public ProgrammingLanguage getById(int id) {
+//		return programmingLanguageService.getById(id);
+//	}
 	
 	@PutMapping("/update")
-	public void update(ProgrammingLanguage programmingLanguage) {
-		programmingLanguageService.update(programmingLanguage);
+	public void update(UpdateProgrammingLanguageRequest updateprogrammingLanguagerequest, String name) {
+		programmingLanguageService.update(updateprogrammingLanguagerequest, name);
 	}
 	
 	

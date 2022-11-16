@@ -1,13 +1,20 @@
 package kodlama.io.programmingLanguages.business.concretes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kodlama.io.programmingLanguages.business.abstracts.ProgrammingLanguageService;
+import kodlama.io.programmingLanguages.business.requests.CreateProgrammingLanguageRequest;
+import kodlama.io.programmingLanguages.business.requests.DeleteProgrammingLanguageRequest;
+import kodlama.io.programmingLanguages.business.requests.UpdateProgrammingLanguageRequest;
+import kodlama.io.programmingLanguages.business.responses.GetAllProgrammingLanguagesResponse;
 import kodlama.io.programmingLanguages.dataAccess.abstracts.ProgrammingLanguageRepository;
+import kodlama.io.programmingLanguages.dataAccess.abstracts.TechnologyRepository;
 import kodlama.io.programmingLanguages.entities.concretes.ProgrammingLanguage;
+import kodlama.io.programmingLanguages.entities.concretes.Technologies;
 
 @Service
 public class ProgrammingLanguageManager implements ProgrammingLanguageService{
@@ -24,46 +31,59 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService{
 
 
 	@Override
-	public List<ProgrammingLanguage> getAll() {
+	public List<GetAllProgrammingLanguagesResponse> getAll() {
 		// business rules
-		return programmingLanguageRepository.getAll();
+		List<ProgrammingLanguage> programmingLanguages = programmingLanguageRepository.findAll();
+        List<GetAllProgrammingLanguagesResponse> programmingLanguagesResponse = new ArrayList<GetAllProgrammingLanguagesResponse>();
+
+        for (ProgrammingLanguage programmingLanguage: programmingLanguages) {
+        	GetAllProgrammingLanguagesResponse responseItem = new GetAllProgrammingLanguagesResponse();
+            responseItem.setId(programmingLanguage.getId());
+            responseItem.setName(programmingLanguage.getName());
+            responseItem.setTechnologies(programmingLanguage.getTechnologies());
+            programmingLanguagesResponse.add(responseItem);
+        }
+        return programmingLanguagesResponse;
 	}
 
 
 	@Override
-	public void delete(int id) {
+	public void delete(DeleteProgrammingLanguageRequest deleteProgrammingLanguageRequest) {
 		// TODO Auto-generated method stub
-		programmingLanguageRepository.delete(id);
+		List<Technologies> technologies = new ArrayList<Technologies>();
+		ProgrammingLanguage programmingLanguage = this.programmingLanguageRepository.findById(deleteProgrammingLanguageRequest.getId()).get(); 
+		programmingLanguage.setTechnologies(technologies);
+		this.programmingLanguageRepository.save(programmingLanguage);
+		
+		programmingLanguageRepository.deleteById(deleteProgrammingLanguageRequest.getId());
+		
 	}
 	
 
 
 
 	@Override
-	public void add(ProgrammingLanguage _programmingLanguage) {
-		for (ProgrammingLanguage programmingLanguage:programmingLanguageRepository.getAll()) {
-			if(programmingLanguage.getName() == _programmingLanguage.getName() || _programmingLanguage.getName().isEmpty()) {
-				
-				System.out.println("programming Language cannot be added");
-				return;
-			}
-			
-		}
-		programmingLanguageRepository.add(_programmingLanguage);
+	public void add(CreateProgrammingLanguageRequest createProgrammingLanguageRequest) {
+		ProgrammingLanguage programmingLanguage = new ProgrammingLanguage();
+		programmingLanguage.setName(createProgrammingLanguageRequest.getName());
+		this.programmingLanguageRepository.save(programmingLanguage);
 		
 	}
 
-	@Override
-	public ProgrammingLanguage getById(int id) {
-		// TODO Auto-generated method stub
-		return programmingLanguageRepository.getById(id);
-	}
+//	@Override
+//	public ProgrammingLanguage getById(int id) {
+//		// TODO Auto-generated method stub
+//		return programmingLanguageRepository.getById(id);
+//	}
 
 
 
 	@Override
-	public void update(ProgrammingLanguage programmingLanguage) {
-		programmingLanguageRepository.update(programmingLanguage);
+	public void update(UpdateProgrammingLanguageRequest updateProgrammingLanguageRequest, String name) {
+		ProgrammingLanguage programmingLanguage = new ProgrammingLanguage();
+		programmingLanguage.setId(updateProgrammingLanguageRequest.getId());
+		programmingLanguage.setName(updateProgrammingLanguageRequest.getName());
+		programmingLanguageRepository.save(programmingLanguage);
 	}
 
 }

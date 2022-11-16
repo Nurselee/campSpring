@@ -1,16 +1,14 @@
 package kodlama.io.programmingLanguages.dataAccess.abstracts;
 
-import java.util.List;
 
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import kodlama.io.programmingLanguages.entities.concretes.ProgrammingLanguage;
 
-
-public interface ProgrammingLanguageRepository {
-	List<ProgrammingLanguage> getAll();
-	void delete(int id);
-	void add(ProgrammingLanguage programmingLanguage);
-	ProgrammingLanguage getById(int id);
-	void update(ProgrammingLanguage programmingLanguage);
+@Repository
+public interface ProgrammingLanguageRepository extends JpaRepository<ProgrammingLanguage, Integer>{
+	
+	
 }
